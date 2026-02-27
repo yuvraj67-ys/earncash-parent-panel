@@ -1,53 +1,36 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 export default function Home() {
-  const [screenshots, setScreenshots] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchScreenshots = async () => {
-    try {
-      const res = await fetch('/api/list');
-      const data = await res.json();
-      setScreenshots(data);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchScreenshots();
-    const interval = setInterval(fetchScreenshots, 30000); // refresh every 30s
-    return () => clearInterval(interval);
-  }, []);
+  // Manually ImgBB links yahan paste kar dena (upload hone ke baad copy-paste)
+  const screenshots = [
+    // Example: "https://i.ibb.co/abc123/whatsapp-call-1.jpg",
+    // Add more as they come from notifications
+  ];
 
   return (
-    <div className="min-h-screen p-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">EarnCash - Kid Video Call Screenshots</h1>
-      <button 
-        onClick={fetchScreenshots}
-        className="bg-green-600 px-6 py-3 rounded mb-8 mx-auto block"
-      >
-        Refresh Now
-      </button>
+    <div className="min-h-screen bg-black text-white p-8">
+      <h1 className="text-4xl font-bold mb-8 text-center">Kid Video Call Screenshots</h1>
+      
+      <div className="text-center mb-8">
+        <p className="text-xl mb-4">New screenshots ImgBB pe upload ho rahe hain.</p>
+        <p className="text-lg">Kid ke phone pe notification mein direct link aayega – usko copy karke yahan add kar do ya ImgBB album check karo.</p>
+        <a 
+          href="https://imgbb.com/" 
+          target="_blank" 
+          className="text-green-400 underline"
+        >
+          ImgBB pe jaake album banao / dekho
+        </a>
+      </div>
 
-      {loading ? (
-        <p className="text-center text-xl">Loading screenshots...</p>
-      ) : screenshots.length === 0 ? (
-        <p className="text-center text-xl">No screenshots yet</p>
+      {screenshots.length === 0 ? (
+        <p className="text-center text-2xl mt-20">Abhi koi screenshot nahi – video call hone pe auto upload hoga!</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {screenshots.map((shot, i) => (
-            <div key={i} className="bg-gray-900 p-4 rounded-lg">
-              <img 
-                src={shot.url} 
-                alt={`${shot.appName} screenshot`} 
-                className="w-full rounded mb-2"
-              />
-              <p className="text-lg">{shot.appName} • {new Date(shot.time).toLocaleString()}</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {screenshots.map((url, i) => (
+            <div key={i} className="bg-zinc-900 p-4 rounded-xl">
+              <img src={url} alt="Screenshot" className="w-full rounded mb-2" />
+              <p className="text-center">Screenshot {i+1}</p>
             </div>
           ))}
         </div>
